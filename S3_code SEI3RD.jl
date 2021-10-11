@@ -21,47 +21,47 @@ end
 #--- parameters
 
 # Number of individuals by groups
-N = [59500000 , 25500000]
+N = #[59500000 , 25500000]
 #Number of individuals in whole environment
 N_sum = sum(N)
 #number of groups
 N_len = length(N)
 
 # beta_asym =  Infection rate matrix of asymptomatic group
-beta_asym = [.258 .250
-            .250 .242]
+beta_asym = #[.258 .250
+            #.250 .242]
 # beta_sym = Infection rate matrix of symptomatic group
-beta_sym = [.238 .230
-            .230 .222]
+beta_sym = #[.238 .230
+            #.230 .222]
 # beta_sev = Infection rate matrix of severe group
-beta_sev = [.078 .070
-            .070 .062]
+beta_sev = #[.078 .070
+            #.070 .062]
 
 # gamma_asym = Multiplicative Inverse of Avg. Infectious period of asymptomatic Infectious individuals
-gamma_asym = 1/10
+gamma_asym = #1/10
 # gamma_sym = group specific Inverse of Avg. Infectious period of symptomatic Infectious individuals
-gamma_sym = [1/10 1/15]
+gamma_sym = #[1/10 1/15]
 # gamma_sev_r = group specific Inverse of Avg. Infectious period of severely symptomatic Infectious individuals with recovery
-gamma_sev_r =  [1/25 1/25]
+gamma_sev_r =  #[1/25 1/25]
 # gamma_sev_d = group specific Inverse of Avg. Infectious period of severely symptomatic Infectious individuals with death
-gamma_sev_d =  [1/20 1/20]
+gamma_sev_d =  #[1/20 1/20]
 
 # epsilon = Multiplicative inverse of Avg. Latent Period
-epsilon =  [1/5.2 1/5.2]
+epsilon =  #[1/5.2 1/5.2]
 
 # eta = Fraction of asymptomatic infectious individuals by groups
-eta =  [.200 .002]
+eta =  #[.200 .002]
 
 # nu = Fraction of severely symptomatic infectious individuals to symptomatic individuals by groups.
-nu = [.050 .516]
+nu = #[.050 .516]
 
 #sigma = Lethality rates by group
-sigma = [.009 .090]
+sigma = #[.009 .090]
 # we do not want to lose initial sigma to use on R0 calculation
 sigma_init = copy(sigma)
 
 # Available beds
-B = 39100
+B = #39100
 # Bed by groups
 B_by_grp = N*B/N_sum
 
@@ -95,13 +95,13 @@ end
 
 #--- initial states of S, E, I_asym, I_sym, I_sev, R, D by groups
 
-S_0 = N * (999997.4/1000000)
-E_0 = N * (1.6/1000000)
-I_asym_0 = N * (1/1000000) *(20/100)
-I_sym_0 = N * (1/1000000) * (65/100)
-I_sev_0 = N * (1/1000000) * (15/100)
-R_0 = [0,0]
-D_0 = [0,0]
+S_0 = #N * (999997.4/1000000)
+E_0 = #N * (1.6/1000000)
+I_asym_0 = #N * (1/1000000) *(20/100)
+I_sym_0 = #N * (1/1000000) * (65/100)
+I_sev_0 = #N * (1/1000000) * (15/100)
+R_0 = #[0,0]
+D_0 = #[0,0]
 
 u0 = zeros(1,N_len,7)
 u0[:,:,1] = S_0
@@ -114,7 +114,7 @@ u0[:,:,7] = D_0
 
 u0_sum = sum(u0)
 u0 = u0/u0_sum #normalizing u0
-tspan = (0. , 750.) #time period
+tspan = #(0. , 750.) #time period
 
 #--- R0 calculation
 
@@ -163,6 +163,3 @@ solution = solve(Problem)
 plot(solution, layout=2, ylim = [0,1] , yticks= 0:0.05:1 , title = ["SEI³RD Low-Risk Group" "SEI³RD High-Risk Group"], label = ["S" "S" "E" "E" "I_asym" "I_asym" "I_sym" "I_sym" "I_sev" "I_sev" "R" "R" "D" "D"])
 xlabel!("Days")
 annotate!(tspan[2]/2,1.03,"R₀=$R0_round")
-
-
-#savefig("C:\\Users\\merts\\Google Drive\\3.semester\\Grimm\\fig3")
